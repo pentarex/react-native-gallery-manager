@@ -10,7 +10,8 @@ import {
   StyleSheet,
   Text,
   View,
-  NativeModules
+  NativeModules,
+  Image
 } from 'react-native';
 import GalleryManager from 'react-native-gallery-manager';
 
@@ -25,7 +26,7 @@ export default class App extends Component<{}> {
 
   constructor(props) {
     super(props)
-    GalleryManager.getAlbums().then((response) => {
+    GalleryManager.getAssets({type: 'all', limit: 10, startFrom: 0}).then((response)=> {
       console.log(response);
     })
     
@@ -33,17 +34,7 @@ export default class App extends Component<{}> {
   
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit App.js
-        </Text>
-        <Text style={styles.instructions}>
-          {instructions}
-        </Text>
-      </View>
+      <Image style={styles.container} source={{uri: 'assets-library://asset/asset.jpeg?id=B84E8479-475C-4727-A4A4-B77AA9980897&ext=jpeg'}}/>
     );
   }
 }
