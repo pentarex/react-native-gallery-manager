@@ -1,0 +1,25 @@
+{
+  "name": "react-native-gallery-manager",
+  "version": "0.0.1",
+  "description": "List Gallery content from React-Native",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "photos",
+    "videos",
+    "images",
+    "gallery",
+    "icloud",
+    "phasset",
+    "react-native"
+  ],
+  "nativePackage": true,
+  "author": "Hristo Hristov",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pentarex/react-native-gallery-manager.git"
+  }
+} 
