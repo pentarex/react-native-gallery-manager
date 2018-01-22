@@ -52,7 +52,7 @@ GalleryManager.getAssets({
 
 #### Response
 
-```json
+```javascript
 { totalAssets: 7771,
   assets: 
    [ { asset: 
@@ -114,7 +114,7 @@ GalleryManager.getAlbums()
 
 #### Response
 
-```json
+```javascript
 { 
     albums: 
         [ 
