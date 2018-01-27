@@ -11,22 +11,20 @@ import {
   Text,
   View,
   NativeModules,
-  Image
+  Image,
+  ScrollView
 } from 'react-native';
 import GalleryManager from 'react-native-gallery-manager';
-
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' +
-    'Cmd+D or shake for dev menu',
-  android: 'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
 
 export default class App extends Component<{}> {
 
   constructor(props) {
     super(props)
+    this.state = {
+      assets: []
+    };
     GalleryManager.getAssets({type: 'all', limit: 10, startFrom: 0}).then((response)=> {
+      this.setState({assets : response.assets});
       console.log(response);
     })
     
@@ -34,26 +32,23 @@ export default class App extends Component<{}> {
   
   render() {
     return (
-      <Image style={styles.container} source={{uri: 'assets-library://asset/asset.jpeg?id=B84E8479-475C-4727-A4A4-B77AA9980897&ext=jpeg'}}/>
+      <ScrollView style={styles.scrollView}>
+        {this.state.assets.map((asset, index) => {
+          return (<Image style={styles.img} source={{uri: asset.uri}} key={asset.id}/>);
+        })}
+      </ScrollView>
+      
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+  scrollView: {
+    flex: 1
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
+  img: {
+    height: 200,
+    width: 200
   },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
+
 });

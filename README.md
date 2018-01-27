@@ -1,6 +1,6 @@
 ## Gallery Manager
 
-Gallery manager for iOS and Android (android under development)
+####‼️Gallery manager for iOS and Android‼️
 
 ## Installation
 
@@ -20,6 +20,8 @@ and then
 react-native link
 ```
 
+### NOTE: <span style="color:red">If you are using CameraRoll from react-native, you have to unlink it before using this library</span>
+
 ## Usage
 
 ```javascript
@@ -30,19 +32,9 @@ import GalleryManager from 'react-native-gallery-manager';
 
 #### Get Assets
 ```javascript
-/**
- * Get Assets from the gallery
- * @param {object} params           Object with params
- * @param {string} params.type      Type of the asset. Can be - image, video, all
- * @param {number} params.limit     Number of assets returned
- * @param {number} params.startFrom From which index to start
- * @param {string} params.albumName If requesting items from album -> set the album name
- */
 GalleryManager.getAssets({
-    type: 'image',              // Type of the asset. Can be - image, video, all (default image)
-    limit: 5,                   // Number of assets returned (default 10)
-    startFrom: 0,               // From which index to start (default 0) 
-    albumName: 'Instagram'      // If requesting items from album -> set the album name (Optional)
+    type: 'all',             
+    startFrom: 0,
 }).then((response) => {
 
 }).catch((err) => {
@@ -50,62 +42,105 @@ GalleryManager.getAssets({
 })
 ```
 
+| Props        	| Type          	| Default | Notes  |
+| ------------- 	|:-------------:	| :------:|:-----|
+| type      		| String 			| 'all'|Type of the asset returned, can be 'image', 'video', 'all' |
+| limit      		| Number 	     	| 10|how many asset to return in one call |
+| startFrom 		| Number      	| 0|From which index to start |
+| albumName 		| String      	| | Set the name of the album from which you want assets (Optional) |
+
 #### Response
 
 ```javascript
-{ totalAssets: 7771,
-  assets: 
-   [ { asset: 
-        { creationDate: null,
-          mimeType: 'image/png',
-          duration: 0,
-          id: '9A303CC7-65AB-4661-A10D-35BBCCC54EEE/L0/001',
-          width: 750,
-          height: 1334,
-          filename: 'IMG_2864.PNG',
-          type: 'image',
-          uri: 'assets-library://asset/asset.png?id=9A303CC7-65AB-4661-A10D-35BBCCC54EEE&ext=png' } },
-     { asset: 
-        { creationDate: null,
-          mimeType: 'image/png',
-          duration: 0,
-          id: 'D9EEB5DC-46BB-4FD0-B1B9-539FFCA36BCD/L0/001',
-          width: 750,
-          height: 1334,
-          filename: 'IMG_2862.PNG',
-          type: 'image',
-          uri: 'assets-library://asset/asset.png?id=D9EEB5DC-46BB-4FD0-B1B9-539FFCA36BCD&ext=png' } },
-     { asset: 
-        { creationDate: null,
-          mimeType: 'video/quicktime',
-          duration: 32.69,
-          id: 'F5FBF7A9-8321-4081-AB1A-03E189B778F7/L0/001',
-          width: 1080,
-          height: 1920,
-          filename: 'IMG_2861.MOV',
-          type: 'video',
-          uri: 'assets-library://asset/asset.mov?id=F5FBF7A9-8321-4081-AB1A-03E189B778F7&ext=mov' } },
-     { asset: 
-        { creationDate: null,
-          mimeType: 'image/jpeg',
-          duration: 0,
-          id: '413D14D6-21A1-4366-8FCF-78B0843C0FDE/L0/001',
-          width: 2096,
-          height: 3724,
-          filename: '1223951E-2F69-4C70-B720-FD1FFD75067D.jpg',
-          type: 'image',
-          uri: 'assets-library://asset/asset.jpeg?id=413D14D6-21A1-4366-8FCF-78B0843C0FDE&ext=jpeg' } } ],
-  end_index: 4,
-  hasMore: true }
+{
+   assets:[
+      {
+         type:'image',
+         uri:'file:/storage/emulated/0/Download/ylo6z7D.jpg',
+         id:38,
+         filename:'ylo6z7D.jpg',
+         width:3456,
+         height:1944,
+         creationDate:'1517064428',
+         duration:0,
+         mimeType:'image/jpeg'
+      },
+      {
+         type:'image',
+         uri:'file:/storage/emulated/0/Download/ylo6z7D (2).jpg',
+         id:39,
+         filename:'ylo6z7D (2).jpg',
+         width:3456,
+         height:1944,
+         creationDate:'1517064428',
+         duration:0,
+         mimeType:'image/jpeg'
+      },
+      {
+         type:'video',
+         uri:'file:/storage/emulated/0/Download/708213662.mp4',
+         id:36,
+         filename:'708213662.mp4',
+         width:1920,
+         height:1080,
+         creationDate:'1516975777',
+         duration:19.186,
+         mimeType:'video/mp4'
+      },
+      {
+         type:'image',
+         uri:'file:/storage/emulated/0/DCIM/Camera/IMG_20180126_090919.jpg',
+         id:35,
+         filename:'IMG_20180126_090919.jpg',
+         width:640,
+         height:480,
+         creationDate:'1516975759',
+         duration:0,
+         mimeType:'image/jpeg'
+      },
+      {
+         type:'image',
+         uri:'file:/storage/emulated/0/DCIM/Camera/IMG_20180126_084854.jpg',
+         id:34,
+         filename:'IMG_20180126_084854.jpg',
+         width:640,
+         height:480,
+         creationDate:'1516974534',
+         duration:0,
+         mimeType:'image/jpeg'
+      },
+      {
+         type:'image',
+         uri:'file:/storage/emulated/0/DCIM/Camera/IMG_20180126_084848.jpg',
+         id:33,
+         filename:'IMG_20180126_084848.jpg',
+         width:640,
+         height:480,
+         creationDate:'1516974528',
+         duration:0,
+         mimeType:'image/jpeg'
+      },
+      {
+         type:'image',
+         uri:'file:/storage/emulated/0/DCIM/Camera/IMG_20180126_084843.jpg',
+         id:32,
+         filename:'IMG_20180126_084843.jpg',
+         width:640,
+         height:480,
+         creationDate:'1516974523',
+         duration:0,
+         mimeType:'image/jpeg'
+      }
+   ],
+   totalAssets:7,
+   next:7,
+   hasMore:false
+}
 ```
 
 #### Get Albums
 ```javascript
-/**
- * Get List with album names
- */
-GalleryManager.getAlbums()
-.then((response) => {
+GalleryManager.getAlbums().then((response) => {
 
 }).catch((err) => {
     // no rejects are defined currently on iOS
@@ -118,13 +153,27 @@ GalleryManager.getAlbums()
 { 
     albums: 
         [ 
-            { assetCount: 616, title: 'WhatsApp' },
-            { assetCount: 6, title: 'Instagram' },
-            { assetCount: 1, title: 'Twitter' },
+            { 
+            	assetCount: 616, title: 'WhatsApp' 
+            },
+            { 
+            	assetCount: 6, title: 'Instagram' 
+            },
+            { 
+            	assetCount: 1, title: 'Twitter' 
+            },
         ],
     totalAlbums: 24 
 }
 ```
+
+
+### Roadmap
+* Resize Image
+* Convert Video to mp4 (iOS only)
+
+
+### Suggestions and forks are welcome
 
 
 

@@ -1,3 +1,5 @@
 rootProject.name = 'example'
+include ':react-native-gallery-manager'
+project(':react-native-gallery-manager').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-gallery-manager/android')
 
 include ':app'

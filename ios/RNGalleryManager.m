@@ -25,7 +25,7 @@
     RCTLogError(@"Invalid type option: '%@'. Expected one of 'image',"
                 "'video' or 'all'.", json);
   }
-  return filter ?: [NSPredicate predicateWithFormat:@"((mediaType == %d)", PHAssetMediaTypeImage];
+  return filter ?: [NSPredicate predicateWithFormat:@"(mediaType = %d) || (mediaType = %d)", PHAssetMediaTypeImage, PHAssetMediaTypeVideo];
 }
 
 
@@ -99,17 +99,15 @@ RCT_EXPORT_METHOD(getAssets:(NSDictionary *)params
     CFStringRef extension = UTTypeCopyPreferredTagWithClass((__bridge CFStringRef _Nonnull)(uit), kUTTagClassFilenameExtension);
     
     [assets addObject:@{
-                        @"asset": @{
-                            @"type": [self getMediaType:([asset mediaType])],
-                            @"width": @([asset pixelWidth]),
-                            @"height": @([asset pixelHeight]),
-                            @"filename": orgFilename ?: @"",
-                            @"mimeType": mimeType,
-                            @"id": [asset localIdentifier],
-                            @"creationDate": [asset creationDate],
-                            @"uri": [self buildAssetUri:[asset localIdentifier] extension:extension],
-                            @"duration": @([asset duration])
-                            }
+                        @"type": [self getMediaType:([asset mediaType])],
+                        @"width": @([asset pixelWidth]),
+                        @"height": @([asset pixelHeight]),
+                        @"filename": orgFilename ?: @"",
+                        @"mimeType": mimeType,
+                        @"id": [asset localIdentifier],
+                        @"creationDate": [asset creationDate],
+                        @"uri": [self buildAssetUri:[asset localIdentifier] extension:extension],
+                        @"duration": @([asset duration])
                         }];
   }];
   
@@ -120,7 +118,7 @@ RCT_EXPORT_METHOD(getAssets:(NSDictionary *)params
           @{
             @"assets": assets,
             @"hasMore": @(hasMore),
-            @"end_index": @(endIndex),
+            @"next": @(endIndex),
             @"totalAssets": @(fetchResults.count)
             }
           );
