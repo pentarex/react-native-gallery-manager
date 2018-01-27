@@ -86,14 +86,11 @@ RCT_EXPORT_METHOD(getAssets:(NSDictionary *)params
     endIndex = (int)[fetchResults count]-1;
   }
   
-  [fetchResults enumerateObjectsAtIndexes:indexSet options:NSEnumerationConcurrent usingBlock:^(PHAsset * _Nonnull asset, NSUInteger index, BOOL * _Nonnull stop) {
-    // Check if the requested limit is reached
-    if (limit - 1 == index) {
-      *stop = YES; // stop the iteration
-    }
-    
+  NSArray<PHAsset*>  *results = [fetchResults objectsAtIndexes:indexSet];
+  
+  for (PHAsset* asset in results) {
     NSArray *resources = [PHAssetResource assetResourcesForAsset:asset ];
-    if ([resources count] < 1) return;
+    if ([resources count] < 1) continue;
     NSString *orgFilename = ((PHAssetResource*)resources[0]).originalFilename;
     NSString *uit = ((PHAssetResource*)resources[0]).uniformTypeIdentifier;
     NSString *mimeType = (NSString *)CFBridgingRelease(UTTypeCopyPreferredTagWithClass((__bridge CFStringRef _Nonnull)(uit), kUTTagClassMIMEType));
@@ -110,9 +107,7 @@ RCT_EXPORT_METHOD(getAssets:(NSDictionary *)params
                         @"uri": [self buildAssetUri:[asset localIdentifier] extension:extension],
                         @"duration": @([asset duration])
                         }];
-  }];
-  
-  
+  }
   
   // resolve
   resolve(
