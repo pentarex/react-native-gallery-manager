@@ -93,6 +93,7 @@ RCT_EXPORT_METHOD(getAssets:(NSDictionary *)params
     }
     
     NSArray *resources = [PHAssetResource assetResourcesForAsset:asset ];
+    if ([resources count] < 1) return;
     NSString *orgFilename = ((PHAssetResource*)resources[0]).originalFilename;
     NSString *uit = ((PHAssetResource*)resources[0]).uniformTypeIdentifier;
     NSString *mimeType = (NSString *)CFBridgingRelease(UTTypeCopyPreferredTagWithClass((__bridge CFStringRef _Nonnull)(uit), kUTTagClassMIMEType));
@@ -103,7 +104,7 @@ RCT_EXPORT_METHOD(getAssets:(NSDictionary *)params
                         @"width": @([asset pixelWidth]),
                         @"height": @([asset pixelHeight]),
                         @"filename": orgFilename ?: @"",
-                        @"mimeType": mimeType,
+                        @"mimeType": mimeType ?: @"",
                         @"id": [asset localIdentifier],
                         @"creationDate": [asset creationDate],
                         @"uri": [self buildAssetUri:[asset localIdentifier] extension:extension],
