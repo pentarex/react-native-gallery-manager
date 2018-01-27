@@ -1,6 +1,6 @@
 {
   "name": "react-native-gallery-manager",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "List Gallery content from React-Native",
   "main": "index.js",
   "scripts": {
