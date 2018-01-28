@@ -150,6 +150,17 @@ RCT_EXPORT_METHOD(getAlbums: (RCTPromiseResolveBlock)resolve
   
 }
 
+/* To Request Authorization for photos */
+RCT_EXPORT_METHOD(requestAuthorization:(RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject)
+{
+  [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
+    
+    resolve(@{
+              @"isAuthorized" : @((BOOL)(status == PHAuthorizationStatusAuthorized))
+              });
+  }];
+}
 
 
 // Get the media type

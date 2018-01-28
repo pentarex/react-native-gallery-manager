@@ -17,6 +17,14 @@ const GalleryManager = {
     },
 
     /**
+     * To Request authorization for access photos
+     * returns Promise
+     */
+    requestAuthorization() {
+        return RNGalleryManager.requestAuthorization();
+    },
+
+    /**
      * Get List with album names
      */
     getAlbums() {
