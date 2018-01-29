@@ -167,6 +167,15 @@ GalleryManager.getAlbums().then((response) => {
 }
 ```
 
+#### Check Permission
+```javascript
+GalleryManager.requestAuthorization().then((response) => {
+    // response = true || false
+}).catch((err) => {
+    // no rejects are defined currently on iOS
+})
+```
+
 
 ### Roadmap
 * Resize Image
