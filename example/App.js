@@ -16,20 +16,37 @@ import {
 } from 'react-native';
 import GalleryManager from 'react-native-gallery-manager';
 
-export default class App extends Component<{}> {
+export default class App extends Component {
 
   constructor(props) {
     super(props)
     this.state = {
       assets: []
     };
-    GalleryManager.getAssets({type: 'all', limit: 10, startFrom: 0}).then((response)=> {
+    GalleryManager.getAssets({type: 'all', limit: 15, startFrom: 0}).then((response)=> {
       this.setState({assets : response.assets});
       console.log(response);
+      response.assets.forEach(asset => {
+        if(asset.type === 'video') {
+          this.convertVideo(asset);
+        }
+      });
     })
     
   };
   
+  convertVideo(asset) {
+    GalleryManager.convertVideo({
+      id: asset.id,
+      compressType: "low",
+      convertTo: 'mpeg4'
+    }).then((response) => {
+      console.log(response);
+    }).catch((err) => {
+      console.warn(err);
+    });
+  }
+
   render() {
     return (
       <ScrollView style={styles.scrollView}>

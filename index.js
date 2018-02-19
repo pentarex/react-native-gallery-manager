@@ -1,7 +1,8 @@
 import {
     NativeModules
 } from 'react-native';
-var RNGalleryManager = NativeModules.RNGalleryManager;
+
+const RNGalleryManager = NativeModules.RNGalleryManager;
 
 const GalleryManager = {
     /**
@@ -29,6 +30,13 @@ const GalleryManager = {
      */
     getAlbums() {
         return RNGalleryManager.getAlbums();
+    },
+
+    /**
+     * Convert video
+     */
+    convertVideo(params) {
+        return RNGalleryManager.convertVideo(params);
     }
 }
 

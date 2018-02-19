@@ -2,4 +2,5 @@
 
 @interface RNGalleryManager : NSObject <RCTBridgeModule>
 
+
 @end
