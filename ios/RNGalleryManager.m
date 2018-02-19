@@ -197,8 +197,8 @@ RCT_EXPORT_METHOD(convertVideo:(NSDictionary *)params
   
   // Converting the params from the user
   NSString *assetId = [RCTConvert NSString:params[@"id"]] ?: @"";
-  AVFileType outputFileType = [RCTConvert PHFileType:params[@"convertTo"]] ?: @"";
-  NSString *pressetType = [RCTConvert PHCompressType:params[@"compressType"]] ?: AVAssetExportPresetPassthrough;
+  AVFileType outputFileType = [RCTConvert PHFileType:params[@"convertTo"]] ?: AVFileTypeMPEG4;
+  NSString *pressetType = [RCTConvert PHCompressType:params[@"quality"]] ?: AVAssetExportPresetPassthrough;
   
   // Throwing some errors to the user if he is not careful enough
   if ([assetId isEqualToString:@""]) {
