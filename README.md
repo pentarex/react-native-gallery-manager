@@ -1,6 +1,7 @@
 ## Gallery Manager
 
-####‼️Gallery manager for iOS and Android‼️
+####Gallery manager for iOS and Android
+
 
 ## Installation
 
@@ -20,7 +21,8 @@ and then
 react-native link
 ```
 
-### NOTE: <span style="color:red">If you are using CameraRoll from react-native, you have to unlink it before using this library</span>
+<span style="color:red"> NOTE: If you are using CameraRoll from react-native, you have to unlink it before using this library</span>
+
 
 ## Usage
 
@@ -30,7 +32,7 @@ import GalleryManager from 'react-native-gallery-manager';
 
 ## Methods and Responses
 
-#### Get Assets
+### Get Assets
 ```javascript
 GalleryManager.getAssets({
     type: 'all',             
@@ -49,7 +51,7 @@ GalleryManager.getAssets({
 | startFrom 		| Number      	| 0|From which index to start |
 | albumName 		| String      	| | Set the name of the album from which you want assets (Optional) |
 
-#### Response
+##### Response
 
 ```javascript
 {
@@ -65,72 +67,7 @@ GalleryManager.getAssets({
          duration:0,
          mimeType:'image/jpeg'
       },
-      {
-         type:'image',
-         uri:'file:/storage/emulated/0/Download/ylo6z7D (2).jpg',
-         id:39,
-         filename:'ylo6z7D (2).jpg',
-         width:3456,
-         height:1944,
-         creationDate:'1517064428',
-         duration:0,
-         mimeType:'image/jpeg'
-      },
-      {
-         type:'video',
-         uri:'file:/storage/emulated/0/Download/708213662.mp4',
-         id:36,
-         filename:'708213662.mp4',
-         width:1920,
-         height:1080,
-         creationDate:'1516975777',
-         duration:19.186,
-         mimeType:'video/mp4'
-      },
-      {
-         type:'image',
-         uri:'file:/storage/emulated/0/DCIM/Camera/IMG_20180126_090919.jpg',
-         id:35,
-         filename:'IMG_20180126_090919.jpg',
-         width:640,
-         height:480,
-         creationDate:'1516975759',
-         duration:0,
-         mimeType:'image/jpeg'
-      },
-      {
-         type:'image',
-         uri:'file:/storage/emulated/0/DCIM/Camera/IMG_20180126_084854.jpg',
-         id:34,
-         filename:'IMG_20180126_084854.jpg',
-         width:640,
-         height:480,
-         creationDate:'1516974534',
-         duration:0,
-         mimeType:'image/jpeg'
-      },
-      {
-         type:'image',
-         uri:'file:/storage/emulated/0/DCIM/Camera/IMG_20180126_084848.jpg',
-         id:33,
-         filename:'IMG_20180126_084848.jpg',
-         width:640,
-         height:480,
-         creationDate:'1516974528',
-         duration:0,
-         mimeType:'image/jpeg'
-      },
-      {
-         type:'image',
-         uri:'file:/storage/emulated/0/DCIM/Camera/IMG_20180126_084843.jpg',
-         id:32,
-         filename:'IMG_20180126_084843.jpg',
-         width:640,
-         height:480,
-         creationDate:'1516974523',
-         duration:0,
-         mimeType:'image/jpeg'
-      }
+      ...
    ],
    totalAssets:7,
    next:7,
@@ -138,7 +75,7 @@ GalleryManager.getAssets({
 }
 ```
 
-#### Get Albums
+### Get Albums
 ```javascript
 GalleryManager.getAlbums().then((response) => {
 
@@ -147,7 +84,7 @@ GalleryManager.getAlbums().then((response) => {
 })
 ```
 
-#### Response
+##### Response
 
 ```javascript
 { 
@@ -162,12 +99,13 @@ GalleryManager.getAlbums().then((response) => {
             { 
             	assetCount: 1, title: 'Twitter' 
             },
+            ...
         ],
     totalAlbums: 24 
 }
 ```
 
-#### Check Permission
+### Check Permission
 ```javascript
 GalleryManager.requestAuthorization().then((response) => {
     // response = true || false
@@ -176,11 +114,41 @@ GalleryManager.requestAuthorization().then((response) => {
 })
 ```
 
+#### Convert Video (iOS only)
+```javascript
+GalleryManager.convertVideo({
+	id: '98F14DF6-3BF9-4D1B-A6E0-0A36A25AE377/L0/001',
+	convertTo: 'm4v',
+	quality: 'low'
+}).then((response) => {
+	console.log(response);
+}).catch((err) => {
+   console.log(err)
+});
+```
+
+| Props        	| Type          	| Default | Notes  |
+| ------------- 	|:-------------:	| :------:|:-----|
+| id      		| String 			| | The id of the video asset | 
+| convertTo      | String 	     	| |Can be mpeg4, m4v or mov |
+| quality 		| String      	| original |Can be original, high, medium, low |
+
+##### Response
+```javascript
+{ 
+  mimeType: 'video/x-m4v',
+  path: 'file:///Users/pentarex/Library/Developer/CoreSimulator/Devices/81873DB4-A220-4F60-88B8-87521BB231E6/data/Containers/Data/Application/91EE6566-4D04-4E33-9608-EDB06DA6C6D2/Documents/8DAEDFBC-9E16-442D-A98F-E145F429DA0B.m4v',
+  filename: '8DAEDFBC-9E16-442D-A98F-E145F429DA0B.m4v',
+  type: 'video',
+  duration: 19.185833333333335 
+}
+```
+The reason the library is returning the path of the file in this format is that the video can be send later to server with fetch library. If the url starts with assets-library:// not with file:// react-native will not send it.
+
+
 
 ### Roadmap
 * Resize Image
-* Convert Video to mp4 (iOS only)
-
 
 ### Suggestions and forks are welcome
 
