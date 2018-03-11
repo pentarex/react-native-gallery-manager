@@ -145,7 +145,8 @@ RCT_EXPORT_METHOD(getAssets:(NSDictionary *)params
                         @"mimeType": mimeType ?: @"",
                         @"id": [asset localIdentifier],
                         @"creationDate": [asset creationDate],
-                        @"uri": [self buildAssetUri:[asset localIdentifier] extension:extension],
+                        @"uri": [self buildAssetUri:[asset localIdentifier] extension:extension lowQ:NO],
+                        @"lowQualityUri": [self buildAssetUri:[asset localIdentifier] extension:extension lowQ:YES],
                         @"duration": @([asset duration])
                         }];
   }
@@ -206,7 +207,7 @@ RCT_EXPORT_METHOD(convertVideo:(NSDictionary *)params
     reject(@"Missing Parameter", @"id is mandatory", error);
     return;
   }
-
+  
   // Getting Video Asset
   NSArray* localIds = [NSArray arrayWithObjects: assetId, nil];
   PHAsset * _Nullable videoAsset = [PHAsset fetchAssetsWithLocalIdentifiers:localIds options:nil].firstObject;
@@ -272,7 +273,7 @@ RCT_EXPORT_METHOD(convertVideo:(NSDictionary *)params
       }
     }];
   }];
- 
+  
   
   
   
@@ -301,13 +302,19 @@ RCT_EXPORT_METHOD(requestAuthorization:(RCTPromiseResolveBlock)resolve
 }
 
 // Build asset url out of localIdentifier and extension
--(NSString *)buildAssetUri:(NSString *)localIdentifier extension:(CFStringRef)extension
+-(NSString *)buildAssetUri:(NSString *)localIdentifier extension:(CFStringRef)extension lowQ:(Boolean)lowq
 {
   NSRange range = [localIdentifier rangeOfString:@"/"];
   if (range.location != NSNotFound) {
     NSString *identifier = [localIdentifier substringWithRange:NSMakeRange(0, range.location)];
     // assets-library://asset/asset.JPG?id=762BFA34-62B1-40FF-B214-44BDE5E98B34&ext=JPG
-    NSString *uri = [NSString stringWithFormat:@"assets-library://asset/asset.%@?id=%@&ext=%@", extension, identifier, extension];
+    NSString *uri;
+    if (lowq) {
+      uri = [NSString stringWithFormat:@"lowq-assets-library://asset/asset.%@?id=%@&ext=%@", extension, identifier, extension];
+    } else {
+      uri = [NSString stringWithFormat:@"assets-library://asset/asset.%@?id=%@&ext=%@", extension, identifier, extension];
+    }
+    
     return uri;
   }
   return @"";
