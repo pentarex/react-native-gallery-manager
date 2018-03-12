@@ -86,15 +86,14 @@ RCT_EXPORT_METHOD(getAssets:(NSDictionary *)params
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
-  if(startFrom == 0){
-    checkPhotoLibraryConfig(); // check if the permission is set in info.plist
-  }
-  
   NSPredicate *predicate = [RCTConvert PHAssetType:params[@"type"]]; // can be video, image or all
   NSUInteger limit = [RCTConvert NSInteger:params[@"limit"]] ?: 10; // how many assets to return DEFAULT 10
   NSUInteger startFrom = [RCTConvert NSInteger:params[@"startFrom"]] ?: 0; // from which index should start DEFAULT 0
   NSString *albumName = [RCTConvert NSString:params[@"albumName"]] ?: @""; // album name
   
+  if(startFrom == 0){
+    checkPhotoLibraryConfig(); // check if the permission is set in info.plist
+  }
   
   // Build the options based on the user request (currently only type of assets)
   PHFetchOptions *fetchOptions = [[PHFetchOptions alloc] init];
