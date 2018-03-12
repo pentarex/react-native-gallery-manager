@@ -26,6 +26,11 @@ RCT_EXPORT_MODULE()
 
 #pragma mark - RCTImageLoader
 
+// set the priority so no need to unlink cameraRoll library
+- (float)loaderPriority{
+  return 5;
+}
+
 - (BOOL)canLoadImageURL:(NSURL *)requestURL {
   
   if (![PHAsset class]) {
