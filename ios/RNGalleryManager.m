@@ -86,7 +86,10 @@ RCT_EXPORT_METHOD(getAssets:(NSDictionary *)params
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
-  checkPhotoLibraryConfig(); // check if the permission is set in info.plist
+  if(startFrom == 0){
+    checkPhotoLibraryConfig(); // check if the permission is set in info.plist
+  }
+  
   NSPredicate *predicate = [RCTConvert PHAssetType:params[@"type"]]; // can be video, image or all
   NSUInteger limit = [RCTConvert NSInteger:params[@"limit"]] ?: 10; // how many assets to return DEFAULT 10
   NSUInteger startFrom = [RCTConvert NSInteger:params[@"startFrom"]] ?: 0; // from which index should start DEFAULT 0
