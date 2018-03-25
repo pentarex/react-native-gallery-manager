@@ -23,18 +23,23 @@ export default class App extends Component {
     this.state = {
       assets: []
     };
-    GalleryManager.getAssets({type: 'all', limit: 15, startFrom: 0}).then((response)=> {
-      this.setState({assets : response.assets});
-      console.log(response);
-      response.assets.forEach(asset => {
-        if(asset.type === 'video') {
-          this.convertVideo(asset);
-        }
-      });
-    })
-    
+    GalleryManager.requestAuthorization().then((result) => {
+      GalleryManager.getAssets({ type: 'all', limit: 15, startFrom: 0 }).then((response) => {
+        this.setState({ assets: response.assets });
+        console.log(response);
+        response.assets.forEach(asset => {
+          if (asset.type === 'video' && Platform.OS === 'ios') {
+            this.convertVideo(asset);
+          }
+        });
+      })
+    }).catch((err) => {
+      console.log(err);
+    });
+
+
   };
-  
+
   convertVideo(asset) {
     GalleryManager.convertVideo({
       id: asset.id,
@@ -49,12 +54,12 @@ export default class App extends Component {
 
   render() {
     return (
-      <ScrollView style={styles.scrollView}>
+      <ScrollView style={styles.scrollView} removeClippedSubviews={true}>
         {this.state.assets.map((asset, index) => {
-          return (<Image style={styles.img} source={{uri: asset.uri}} key={asset.id}/>);
+          return (<Image style={styles.img} resizeMethod='resize' source={{ uri: asset.uri }} key={asset.id} onLoadEnd={() => console.log(`${asset.uri} loaded`)}/>);
         })}
       </ScrollView>
-      
+
     );
   }
 }

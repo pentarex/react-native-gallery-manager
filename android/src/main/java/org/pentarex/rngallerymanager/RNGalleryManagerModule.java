@@ -141,7 +141,7 @@ public class RNGalleryManagerModule extends ReactContextBaseJavaModule {
         String fileName = gallery.getString(gallery.getColumnIndex(MediaStore.Files.FileColumns.DISPLAY_NAME));
         Double height = gallery.getDouble(gallery.getColumnIndex(MediaStore.Files.FileColumns.HEIGHT));
         Double width = gallery.getDouble(gallery.getColumnIndex(MediaStore.Files.FileColumns.WIDTH));
-        String uri = "file:" + gallery.getString(gallery.getColumnIndex(MediaStore.Files.FileColumns.DATA));
+        String uri = "file://" + gallery.getString(gallery.getColumnIndex(MediaStore.Files.FileColumns.DATA));
         Double id = gallery.getDouble(gallery.getColumnIndex(MediaStore.Files.FileColumns._ID));
 
 

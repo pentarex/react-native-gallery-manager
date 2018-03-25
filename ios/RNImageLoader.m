@@ -31,19 +31,28 @@ RCT_EXPORT_MODULE()
   if (![PHAsset class]) {
     return NO;
   }
-  return [requestURL.scheme caseInsensitiveCompare:@"assets-library"] == NSOrderedSame;
+  return [requestURL.scheme caseInsensitiveCompare:@"assets-library"] == NSOrderedSame ||
+  [requestURL.scheme caseInsensitiveCompare:@"lowq-assets-library"] == NSOrderedSame;
   
 }
 
 - (RCTImageLoaderCancellationBlock)loadImageForURL:(NSURL *)imageURL size:(CGSize)size scale:(CGFloat)scale resizeMode:(RCTResizeMode)resizeMode progressHandler:(RCTImageLoaderProgressBlock)progressHandler partialLoadHandler:(RCTImageLoaderPartialLoadBlock)partialLoadHandler completionHandler:(RCTImageLoaderCompletionBlock)completionHandler {
   NSString *assetID = @"";
   PHFetchResult *results;
+  Boolean isLowQuality = NO;
   if (!imageURL) {
     completionHandler(RCTErrorWithMessage(@"Cannot load a photo library asset with no URL"), nil);
     return ^{};
-  } else {
+  } else if ([imageURL.scheme caseInsensitiveCompare:@"assets-library"] == NSOrderedSame) {
     assetID = [imageURL absoluteString];
     results = [PHAsset fetchAssetsWithALAssetURLs:@[imageURL] options:nil];
+    isLowQuality = NO;
+  } else {
+    assetID = [[imageURL absoluteString] stringByReplacingOccurrencesOfString:@"lowq-assets-library"
+                                                                   withString:@"assets-library"];
+    NSURL *url = [[NSURL alloc] initWithString:assetID];
+    results = [PHAsset fetchAssetsWithALAssetURLs:@[url] options:nil];
+    isLowQuality = YES;
   }
   if (results.count == 0) {
     NSString *errorText = [NSString stringWithFormat:@"Failed to fetch PHAsset with local identifier %@ with no error message.", assetID];
@@ -66,7 +75,11 @@ RCT_EXPORT_MODULE()
   
   // Note: PhotoKit defaults to a deliveryMode of PHImageRequestOptionsDeliveryModeOpportunistic
   // which means it may call back multiple times - we probably don't want that
-  imageOptions.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
+  if (isLowQuality) {
+    imageOptions.deliveryMode = PHImageRequestOptionsDeliveryModeFastFormat;
+  } else {
+    imageOptions.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
+  }
   
   BOOL useMaximumSize = CGSizeEqualToSize(size, CGSizeZero);
   CGSize targetSize;
@@ -102,3 +115,4 @@ RCT_EXPORT_MODULE()
 }
 
 @end
+

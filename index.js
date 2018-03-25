@@ -1,5 +1,7 @@
 import {
-    NativeModules
+    NativeModules,
+    Platform,
+    PermissionsAndroid
 } from 'react-native';
 
 const RNGalleryManager = NativeModules.RNGalleryManager;
@@ -21,8 +23,30 @@ const GalleryManager = {
      * To Request authorization for access photos
      * returns Promise
      */
-    requestAuthorization() {
-        return RNGalleryManager.requestAuthorization();
+    requestAuthorization(title, message) {
+        if (Platform.OS === 'ios') {
+            return RNGalleryManager.requestAuthorization();
+        } else {
+            return new Promise(async (resolve, reject) => {
+                const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE, {
+                    title: title,
+                    message: message,
+                });
+
+                // On devices before SDK version 23, the permissions are automatically granted if they appear in the manifest,
+                // so check and request should always be true.
+                // https://github.com/facebook/react-native-website/blob/master/docs/permissionsandroid.md
+                const isAuthorized =
+                    Platform.Version >= 23 ? granted === PermissionsAndroid.RESULTS.GRANTED : granted === true;
+
+                if (isAuthorized) {
+                    resolve(isAuthorized);
+                } else {
+                    reject(isAuthorized);
+                }
+            });
+        }
+
     },
 
     /**
