@@ -1,6 +1,6 @@
 ## Gallery Manager
 
-####Gallery manager for iOS and Android
+#### Gallery manager for iOS and Android
 
 
 ## Installation
@@ -22,6 +22,18 @@ react-native link
 ```
 
 <span style="color:red"> NOTE: If you are using CameraRoll from react-native, you have to unlink it before using this library</span>
+
+
+## Issues
+* If the image is not being shown in Android try the following
+	* resizeMethod='resize' to the Image component
+	* removeClippedSubviews={true} to ScrollView (FlatList, SectionList)
+	* android:largeHeap="true" to the android manifest.xml in the application section (I dont recommend that but, you got to do, what you got to do....)
+
+[#10569](https://github.com/facebook/react-native/issues/10569)
+[#13600](https://github.com/facebook/react-native/issues/13600)
+[#10470](https://github.com/facebook/react-native/issues/10470)
+
 
 
 ## Usage
@@ -58,7 +70,7 @@ GalleryManager.getAssets({
    assets:[
       {
          type:'image',
-         uri:'file:/storage/emulated/0/Download/ylo6z7D.jpg',
+         uri:'file:///storage/emulated/0/Download/ylo6z7D.jpg',
          id:38,
          filename:'ylo6z7D.jpg',
          width:3456,
@@ -107,12 +119,16 @@ GalleryManager.getAlbums().then((response) => {
 
 ### Check Permission
 ```javascript
-GalleryManager.requestAuthorization().then((response) => {
+GalleryManager.requestAuthorization(title, message).then((response) => {
     // response = true || false
 }).catch((err) => {
-    // no rejects are defined currently on iOS
+    
 })
 ```
+| Props        	| Type          	| Default | Notes  |
+| ------------- 	|:-------------:	| :------:|:-----|
+| title      		| String 			| | (Android) title of the dialog | 
+| message      | String 	     	| | (Android) message in the dialog |
 
 #### Convert Video (iOS only)
 ```javascript
@@ -148,7 +164,7 @@ The reason the library is returning the path of the file in this format is that 
 
 
 ### Roadmap
-* Resize Image
+
 
 ### Suggestions and forks are welcome
 
