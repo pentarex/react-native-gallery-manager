@@ -120,7 +120,7 @@ GalleryManager.getAlbums().then((response) => {
 ### Check Permission
 ```javascript
 GalleryManager.requestAuthorization(title, message).then((response) => {
-    // response = true || false
+    // response.isAuthorized = true || false
 }).catch((err) => {
     
 })
