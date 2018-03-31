@@ -26,6 +26,7 @@ react-native link
 
 ## Issues
 * If the image is not being shown in Android try the following
+	* [increase fresco memory](https://medium.com/in-the-hudl/configure-fresco-in-react-native-28c2bc7dcc4d)
 	* resizeMethod='resize' to the Image component
 	* removeClippedSubviews={true} to ScrollView (FlatList, SectionList)
 	* android:largeHeap="true" to the android manifest.xml in the application section (I dont recommend that but, you got to do, what you got to do....)
