@@ -40,9 +40,9 @@ const GalleryManager = {
                     Platform.Version >= 23 ? granted === PermissionsAndroid.RESULTS.GRANTED : granted === true;
 
                 if (isAuthorized) {
-                    resolve(isAuthorized);
+                    resolve({ isAuthorized: true });
                 } else {
-                    reject(isAuthorized);
+                    resolve({ isAuthorized: false })
                 }
             });
         }
