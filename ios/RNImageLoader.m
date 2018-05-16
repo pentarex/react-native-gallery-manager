@@ -113,6 +113,8 @@ RCT_EXPORT_MODULE()
     [[PHImageManager defaultManager] cancelImageRequest:requestID];
   };
 }
-
+- (float)loaderPriority {
+  return 5;
+}
 @end
 
