@@ -77,17 +77,23 @@
 @implementation RNGalleryManager
 RCT_EXPORT_MODULE();
 
+@synthesize bridge = _bridge;
+
+PHFetchResult<PHAsset *> *fetchResults;
+
 /* Get the assets from the gallery */
 RCT_EXPORT_METHOD(getAssets:(NSDictionary *)params
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
-  checkPhotoLibraryConfig(); // check if the permission is set in info.plist
   NSPredicate *predicate = [RCTConvert PHAssetType:params[@"type"]]; // can be video, image or all
   NSUInteger limit = [RCTConvert NSInteger:params[@"limit"]] ?: 10; // how many assets to return DEFAULT 10
   NSUInteger startFrom = [RCTConvert NSInteger:params[@"startFrom"]] ?: 0; // from which index should start DEFAULT 0
   NSString *albumName = [RCTConvert NSString:params[@"albumName"]] ?: @""; // album name
   
+  if(startFrom == 0){
+    checkPhotoLibraryConfig(); // check if the permission is set in info.plist
+  }
   
   // Build the options based on the user request (currently only type of assets)
   PHFetchOptions *fetchOptions = [[PHFetchOptions alloc] init];
@@ -95,20 +101,22 @@ RCT_EXPORT_METHOD(getAssets:(NSDictionary *)params
   fetchOptions.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
   
   
-  PHFetchResult<PHAsset *> * _Nonnull fetchResults;
-  if (![albumName isEqualToString:@""])
+  if(fetchResults == nil || startFrom == 0)
   {
-    PHFetchOptions *albumFetchOptions = [[PHFetchOptions alloc] init];
-    albumFetchOptions.predicate = [NSPredicate predicateWithFormat:@"title = %@", albumName];
-    __block PHAssetCollection *collection = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum
-                                                                                     subtype:PHAssetCollectionSubtypeAny
-                                                                                     options:albumFetchOptions].firstObject;
-    fetchResults = [PHAsset fetchAssetsInAssetCollection:collection options:nil];
-  }
-  else
-  {
-    
-    fetchResults = [PHAsset fetchAssetsWithOptions:fetchOptions]; // get the assets
+    if (![albumName isEqualToString:@""])
+    {
+      PHFetchOptions *albumFetchOptions = [[PHFetchOptions alloc] init];
+      albumFetchOptions.predicate = [NSPredicate predicateWithFormat:@"title = %@", albumName];
+      __block PHAssetCollection *collection = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum
+                                                                                      subtype:PHAssetCollectionSubtypeAny
+                                                                                      options:albumFetchOptions].firstObject;
+      fetchResults = [PHAsset fetchAssetsInAssetCollection:collection options:nil];
+    }
+    else
+    {
+      
+      fetchResults = [PHAsset fetchAssetsWithOptions:fetchOptions]; // get the assets
+    }
   }
   
   BOOL __block hasMore = NO;
@@ -130,19 +138,10 @@ RCT_EXPORT_METHOD(getAssets:(NSDictionary *)params
   NSArray<PHAsset*>  *results = [fetchResults objectsAtIndexes:indexSet];
   
   for (PHAsset* asset in results) {
-    NSArray *resources = [PHAssetResource assetResourcesForAsset:asset ];
-    if ([resources count] < 1) continue;
-    NSString *orgFilename = ((PHAssetResource*)resources[0]).originalFilename;
-    NSString *uit = ((PHAssetResource*)resources[0]).uniformTypeIdentifier;
-    NSString *mimeType = (NSString *)CFBridgingRelease(UTTypeCopyPreferredTagWithClass((__bridge CFStringRef _Nonnull)(uit), kUTTagClassMIMEType));
-    CFStringRef extension = UTTypeCopyPreferredTagWithClass((__bridge CFStringRef _Nonnull)(uit), kUTTagClassFilenameExtension);
-    
     [assets addObject:@{
                         @"type": [self getMediaType:([asset mediaType])],
                         @"width": @([asset pixelWidth]),
                         @"height": @([asset pixelHeight]),
-                        @"filename": orgFilename ?: @"",
-                        @"mimeType": mimeType ?: @"",
                         @"id": [asset localIdentifier],
                         @"creationDate": [asset creationDate],
                         @"uri": [self buildAssetUri:[asset localIdentifier] extension:extension lowQ:NO],
@@ -331,4 +330,5 @@ static void checkPhotoLibraryConfig()
 }
 
 @end
+
 
