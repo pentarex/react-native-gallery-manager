@@ -103,7 +103,7 @@ RCT_EXPORT_METHOD(getAssets:(NSDictionary *)params
     __block PHAssetCollection *collection = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum
                                                                                      subtype:PHAssetCollectionSubtypeAny
                                                                                      options:albumFetchOptions].firstObject;
-    fetchResults = [PHAsset fetchAssetsInAssetCollection:collection options:nil];
+    fetchResults = [PHAsset fetchAssetsInAssetCollection:collection options:fetchOptions];
   }
   else
   {
