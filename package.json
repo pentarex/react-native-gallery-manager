@@ -3,6 +3,7 @@
   "version": "1.0.9",
   "description": "List Gallery content from React-Native",
   "main": "index.js",
+  "homepage": "https://github.com/pentarex/react-native-gallery-manager",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
