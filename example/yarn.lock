@@ -3561,6 +3561,9 @@ react-devtools-core@3.0.0:
     shell-quote "^1.6.1"
     ws "^2.0.3"
 
+"react-native-gallery-manager@file:..":
+  version "1.0.9"
+
 react-native@0.52.0:
   version "0.52.0"
   resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.52.0.tgz#9784663a2aa40b30c87d4c9c06ef26cf8d419d91"
